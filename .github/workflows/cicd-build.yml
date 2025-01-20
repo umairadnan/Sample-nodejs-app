@@ -23,8 +23,8 @@ jobs:
 
       - name: SSH into server and set up environment
         run: |
-          ssh -o StrictHostKeyChecking=no username@your-ubuntu-server-ip "
-            cd /path/to/your/repo && \
+          ssh -o StrictHostKeyChecking=no ubuntu@54.226.133.180 "
+            cd /home/ubuntu/Sample-Node.js-Application && \
             npm install && \
             npm start &"
         env:
