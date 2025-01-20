@@ -9,33 +9,28 @@ on:
       - master
 
 jobs:
-  build-and-run:
-    runs-on: ubuntu-22.04
-
-    services:
-      mongo:
-        image: mongo:latest
-        ports:
-          - 27017:27017
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Install dependencies
+      - name: Set up SSH key
         run: |
-          npm install
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
-      - name: Start Application
+      - name: SSH into server and set up environment
         run: |
-          npm start &
+          ssh -o StrictHostKeyChecking=no username@your-ubuntu-server-ip "
+            cd /path/to/your/repo && \
+            npm install && \
+            npm start &"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Test the application
         run: |
           sleep 5  # Wait for the app to start
-          curl http://localhost:3000  # Adjust the URL if needed (if using port 3000)
+          curl http://your-ubuntu-server-ip:3000  # Adjust if needed
