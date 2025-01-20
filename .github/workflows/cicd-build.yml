@@ -18,19 +18,17 @@ jobs:
 
       - name: Set up SSH key
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
       - name: SSH into server and set up environment
         run: |
-          ssh -v -o StrictHostKeyChecking=no ubuntu@54.226.133.180 "
-            cd /home/ubuntu/Sample-Node.js-Application && \
-            npm install && \
-            npm start &"
+          ssh -v -o StrictHostKeyChecking=no ubuntu@54.226.133.180 "cd /home/ubuntu/Sample-Node.js-Application && npm install && npm start &"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Test the application
         run: |
           sleep 5  # Wait for the app to start
-          curl http://your-ubuntu-server-ip:3000  # Adjust if needed
+          curl http://54.226.133.180:3000  # Use server IP for testing
