@@ -25,7 +25,7 @@ jobs:
       - name: SSH into server and set up environment
         run: |
           ssh -v -o StrictHostKeyChecking=no ubuntu@3.82.217.185 <<EOF
-          cd /home/ubuntu/Sample-Node.js-Application
+          cd /home/ubuntu/Sample-nodejs-app
           git pull
           npm install
           # Build and run the Docker containers using Docker Compose
