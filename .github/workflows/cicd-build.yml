@@ -30,8 +30,3 @@ jobs:
           npm install
           pm2 restart all || pm2 start npm --name "node-app" -- start
           EOF
-
-    #  - name: Test the application
-     #   run: |
-      #    sleep 5
-       #   curl http://54.226.133.180:3000
