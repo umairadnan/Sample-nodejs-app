@@ -24,9 +24,11 @@ jobs:
 
       - name: SSH into server and set up environment
         run: |
-          ssh -v -o StrictHostKeyChecking=no ubuntu@54.226.133.180 <<EOF
+          ssh -v -o StrictHostKeyChecking=no ubuntu@3.82.217.185 <<EOF
           cd /home/ubuntu/Sample-Node.js-Application
           git pull
           npm install
-          pm2 restart all || pm2 start npm --name "node-app" -- start
+          # Build and run the Docker containers using Docker Compose
+          docker-compose down  # Stop any running containers first
+          docker-compose up --build -d  # Build and start containers in detached mode
           EOF
